@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { Heading, Page, TextStyle, Layout, EmptyState } from "@shopify/polaris";
 import { ResourcePicker, TitleBar } from "@shopify/app-bridge-react";
 import ResourceListWithProducts from "./components/ResourceList";
-import store from "store-js";
+import { ProductsContext } from "../context/ProductsContext";
 
 const img = "https://cdn.shopify.com/s/files/1/0757/9955/files/empty-state.svg";
 
 const Index = () => {
   const [open, setOpen] = useState(false);
-  const [ids, setIds] = useState(null);
+  const { productIds, updateProductIds } = useContext(ProductsContext);
 
   const handleSelection = (resources) => {
     const idsFromResources = resources.selection.map((product) => product.id);
-    setIds(idsFromResources);
+    updateProductIds(idsFromResources);
     setOpen(false);
   };
 
@@ -31,7 +31,9 @@ const Index = () => {
         onSelection={(resources) => handleSelection(resources)}
         onCancel={() => setOpen(false)}
       />
-      {!ids ? (
+      {productIds.length > 0 ? (
+        <ResourceListWithProducts ids={productIds} />
+      ) : (
         <Layout>
           <EmptyState
             heading="Discount your products temporarily"
@@ -44,8 +46,6 @@ const Index = () => {
             <p>Select products to change their price temporarily.</p>
           </EmptyState>
         </Layout>
-      ) : (
-        <ResourceListWithProducts ids={ids} />
       )}
     </Page>
   );

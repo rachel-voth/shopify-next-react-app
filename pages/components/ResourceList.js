@@ -10,7 +10,6 @@ import {
 } from "@shopify/polaris";
 import store from "store-js";
 import { Redirect } from "@shopify/app-bridge/actions";
-import { Context } from "@shopify/app-bridge-react";
 
 // GraphQL query to retrieve products by IDs.
 // The price field belongs to the variants object because
@@ -52,7 +51,6 @@ const GET_PRODUCTS_BY_ID = gql`
 `;
 
 const ResourceListWithProducts = ({ ids }) => {
-  const contextType = useContext(Context);
   return (
     // GraphQL query to retrieve products and their prices
     <Query query={GET_PRODUCTS_BY_ID} variables={{ ids: ids }}>

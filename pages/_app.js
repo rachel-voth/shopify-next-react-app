@@ -1,3 +1,4 @@
+import { useState } from "react";
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "react-apollo";
 import App from "next/app";
@@ -7,6 +8,7 @@ import { authenticatedFetch } from "@shopify/app-bridge-utils";
 import { Redirect } from "@shopify/app-bridge/actions";
 import "@shopify/polaris/dist/styles.css";
 import translations from "@shopify/polaris/locales/en.json";
+import { ProductsProvider } from "../context/ProductsContext";
 
 function userLoggedInFetch(app) {
   const fetchFunction = authenticatedFetch(app);
@@ -33,6 +35,11 @@ function userLoggedInFetch(app) {
 function MyProvider(props) {
   const app = useAppBridge();
 
+  const [productIds, setProductIds] = useState([]);
+  const updateProductIds = (productIds) => {
+    setProductIds(productIds);
+  };
+
   const client = new ApolloClient({
     fetch: userLoggedInFetch(app),
     fetchOptions: {
@@ -44,13 +51,21 @@ function MyProvider(props) {
 
   return (
     <ApolloProvider client={client}>
-      <Component {...props} />
+      <ProductsProvider value={{ productIds, updateProductIds }}>
+        <Component {...props} />
+      </ProductsProvider>
     </ApolloProvider>
   );
 }
 
 class MyApp extends App {
   render() {
+    const productContextObject = {
+      productIds: ["1", "2"],
+      udpateProductIds: function () {
+        console.log("update");
+      },
+    };
     const { Component, pageProps, host } = this.props;
     return (
       <AppProvider i18n={translations}>
@@ -61,7 +76,9 @@ class MyApp extends App {
             forceRedirect: true,
           }}
         >
+          {/* <ProductsProvider value={productContextObject}> */}
           <MyProvider Component={Component} {...pageProps} />
+          {/* </ProductsProvider> */}
         </Provider>
       </AppProvider>
     );
