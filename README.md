@@ -1,8 +1,8 @@
 # Overview
 
-This app takes a Node/React [Shopify tutorial](https://shopify.dev/apps/getting-started/add-functionality#scenario) and rewrites it to use mainly functional components. It uses hooks and context instead of class components and local storage to manage state.
+This Node/React app comes from a [Shopify tutorial](https://shopify.dev/apps/getting-started/add-functionality#scenario) but I refactored it to use mainly functional components. It uses React hooks and context instead of class components and local storage to manage state.
 
-The main changes were made in `pages/components/ResourceList.js`, `pages/index.js`, `pages/_app.js`, and `context/ProductsContext.js`.
+The main changes I made are in `pages/index.js`, `pages/_app.js`, `context/ProductsContext.js` and `pages/components/ResourceList.js`.
 
 ## Shopify App Node
 

@@ -8,8 +8,6 @@ import {
   TextStyle,
   Thumbnail,
 } from "@shopify/polaris";
-import store from "store-js";
-import { Redirect } from "@shopify/app-bridge/actions";
 
 // GraphQL query to retrieve products by IDs.
 // The price field belongs to the variants object because
@@ -50,6 +48,8 @@ const GET_PRODUCTS_BY_ID = gql`
   }
 `;
 
+// original tutorial used store-js to get the ids
+// now we are passing them in as a prop after getting them from Products Context
 const ResourceListWithProducts = ({ ids }) => {
   return (
     // GraphQL query to retrieve products and their prices
@@ -60,7 +60,7 @@ const ResourceListWithProducts = ({ ids }) => {
 
         return (
           <Card>
-            <ResourceList // Defines your resource list component
+            <ResourceList
               showHeader
               resourceName={{ singular: "Product", plural: "Products" }}
               items={data.nodes}
@@ -86,7 +86,8 @@ const ResourceListWithProducts = ({ ids }) => {
                     media={media}
                     accessibilityLabel={`View details for ${item.title}`}
                     onClick={() => {
-                      store.set("item", item);
+                      // not doing anything here yet
+                      console.log("on click");
                     }}
                   >
                     <Stack>

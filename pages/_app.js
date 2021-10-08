@@ -35,6 +35,7 @@ function userLoggedInFetch(app) {
 function MyProvider(props) {
   const app = useAppBridge();
 
+  // set up Products Context initial values
   const [productIds, setProductIds] = useState([]);
   const updateProductIds = (productIds) => {
     setProductIds(productIds);
@@ -60,12 +61,6 @@ function MyProvider(props) {
 
 class MyApp extends App {
   render() {
-    const productContextObject = {
-      productIds: ["1", "2"],
-      udpateProductIds: function () {
-        console.log("update");
-      },
-    };
     const { Component, pageProps, host } = this.props;
     return (
       <AppProvider i18n={translations}>
@@ -76,9 +71,7 @@ class MyApp extends App {
             forceRedirect: true,
           }}
         >
-          {/* <ProductsProvider value={productContextObject}> */}
           <MyProvider Component={Component} {...pageProps} />
-          {/* </ProductsProvider> */}
         </Provider>
       </AppProvider>
     );
